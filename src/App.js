@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ProductList from './components/ProductList'; 
+import ProductDetail from './components/ProductDetail'; 
+import Cart from './components/Cart'; 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+const App = () => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showCart, setShowCart] = useState(false);
+
+  const handleProductSelect = (product) => {
+    setSelectedProduct(product);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Product Store</h1>
+      <button onClick={() => setShowCart(!showCart)}>
+        {showCart ? 'Back to Products' : 'View Cart'}
+      </button>
+      {showCart ? (
+        <Cart />
+      ) : (
+        <>
+          <ProductList onProductSelect={handleProductSelect} />
+          {selectedProduct && <ProductDetail product={selectedProduct} />} {/* Only render if a product is selected */}
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default App;
